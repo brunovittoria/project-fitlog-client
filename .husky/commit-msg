@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-# Read the commit message from the file
-MSG="$(cat $1)"
-
-# Run the linter with the message
-echo "$MSG" | npx --no -- git-commit-msg-linter
