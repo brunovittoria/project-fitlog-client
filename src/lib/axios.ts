@@ -8,7 +8,7 @@ import type {
   ApiEndpoints,
 } from '@/types/api/base'
 
-export const api = axios.create({
+export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -16,7 +16,7 @@ export const api = axios.create({
 })
 
 // Request interceptor
-api.interceptors.request.use((config) => {
+axiosInstance.interceptors.request.use((config) => {
   const { '@fitlog:token': token } = parseCookies()
 
   if (token && config.headers) {
@@ -27,7 +27,7 @@ api.interceptors.request.use((config) => {
 })
 
 // Generic request function with types
-export async function apiRequest<T>({
+export async function api<T>({
   method,
   endpoint,
   config,
@@ -37,7 +37,7 @@ export async function apiRequest<T>({
   config?: ApiRequestConfig
 }): Promise<ApiResponse<T>> {
   try {
-    const response = await api.request<ApiResponse<T>>({
+    const response = await axiosInstance.request<ApiResponse<T>>({
       method,
       url: endpoint,
       params: config?.params,
