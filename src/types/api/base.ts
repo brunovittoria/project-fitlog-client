@@ -54,13 +54,18 @@ export type ApiRequestConfig = {
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
 // Base API endpoints type
-export enum ApiEndpoints {
-  REGISTER = '/register',
-  LOGIN = '/login',
-  PROFILE = '/me',
-  SUBSCRIPTION_CREATE = '/subcription/create',
-  SUBSCRIPTION_STATUS = '/subcription/status',
-  EXERCISE = '/exercise',
-  WORKOUT = '/workout',
-  WORKOUTS = '/workouts',
-}
+export const API_ENDPOINTS = {
+  REGISTER: '/register',
+  LOGIN: '/login',
+  PROFILE: '/me',
+  SUBSCRIPTION_CREATE: '/subcription/create',
+  SUBSCRIPTION_STATUS: '/subcription/status',
+  EXERCISE: '/exercise',
+  WORKOUT: '/workout',
+  WORKOUTS: '/workouts',
+  WORKOUT_BY_ID: (id: string) => `/workout/${id}`,
+} as const
+
+export type ApiEndpoint =
+  | string
+  | ReturnType<typeof API_ENDPOINTS.WORKOUT_BY_ID>

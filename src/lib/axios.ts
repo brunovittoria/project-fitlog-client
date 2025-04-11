@@ -5,7 +5,7 @@ import type {
   ApiResponse,
   ApiRequestConfig,
   HttpMethod,
-  ApiEndpoints,
+  ApiEndpoint,
 } from '@/types/api/base'
 
 export const axiosInstance = axios.create({
@@ -33,7 +33,7 @@ export async function api<T>({
   config,
 }: {
   method: HttpMethod
-  endpoint: ApiEndpoints
+  endpoint: ApiEndpoint
   config?: ApiRequestConfig
 }): Promise<ApiResponse<T>> {
   try {
