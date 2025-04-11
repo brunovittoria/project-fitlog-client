@@ -41,7 +41,8 @@ export async function api<T>({
       method,
       url: endpoint,
       params: config?.params,
-      data: config?.pagination || config?.sort || config?.filters,
+      data: config?.data,
+      headers: config?.headers,
     })
 
     return response.data

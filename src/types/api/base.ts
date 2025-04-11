@@ -43,6 +43,8 @@ export interface FilterParams {
 
 export type ApiRequestConfig = {
   params?: QueryParams
+  data?: unknown
+  headers?: Record<string, string>
   pagination?: PaginationParams
   sort?: SortParams[]
   filters?: FilterParams[]
