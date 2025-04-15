@@ -25,3 +25,8 @@ export interface GetExerciseRequest {
 export interface DeleteExerciseRequest {
   id: string
 }
+
+export interface GetAllExercisesRequest extends Record<string, unknown> {
+  workoutId?: string
+  type?: 'strength' | 'cardio' | 'mobility'
+}

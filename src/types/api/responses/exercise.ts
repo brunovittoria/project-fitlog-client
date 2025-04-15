@@ -17,3 +17,8 @@ export interface UpdateExerciseResponse {
 export interface DeleteExerciseResponse {
   message: string
 }
+
+export interface GetAllExercisesResponse {
+  data: Exercise[]
+  message: string
+}

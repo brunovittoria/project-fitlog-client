@@ -61,6 +61,7 @@ export const API_ENDPOINTS = {
   SUBSCRIPTION_CREATE: '/subcription/create',
   SUBSCRIPTION_STATUS: '/subcription/status',
   EXERCISE: '/exercise',
+  EXERCISES: '/exercises',
   WORKOUT: '/workout',
   WORKOUTS: '/workouts',
   WORKOUT_BY_ID: (id: string) => `/workout/${id}`,
