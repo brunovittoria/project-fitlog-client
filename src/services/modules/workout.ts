@@ -13,7 +13,7 @@ import type {
   GetAllWorkoutsRequest,
 } from '@/types/api/requests/workout'
 import { Workout } from '@/types/models/workout'
-import { API_ENDPOINTS } from '@/types/api/base'
+import { API_ENDPOINTS } from '@/routes'
 
 const { WORKOUT, WORKOUTS, WORKOUT_BY_ID } = API_ENDPOINTS
 

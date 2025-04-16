@@ -13,7 +13,8 @@ import type {
   GetAllExercisesRequest,
 } from '@/types/api/requests/exercise'
 import { Exercise } from '@/types/models/exercise'
-import { API_ENDPOINTS, QueryParams } from '@/types/api/base'
+import { QueryParams } from '@/types/api/base'
+import { API_ENDPOINTS } from '@/routes'
 
 const { EXERCISE, EXERCISES } = API_ENDPOINTS
 
