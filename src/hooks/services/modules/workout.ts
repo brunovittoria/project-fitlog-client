@@ -1,5 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { workoutService } from '@/services/modules/workout'
+import type { ApiError } from '@/types/api/base'
 import type {
   CreateWorkoutRequest,
   UpdateWorkoutRequest,
@@ -10,36 +12,52 @@ export function useWorkout(userId: string) {
   const workoutsQuery = useQuery({
     queryKey: ['workouts', userId],
     queryFn: () => workoutService.getAllWorkouts({ userId }),
+    staleTime: 1000 * 60 * 5,
+    retry: 2,
   })
+
+  // Handle query errors with a side effect
+  if (workoutsQuery.error) {
+    toast.error(`Failed to fetch workouts: ${workoutsQuery.error.message}`)
+  }
 
   const workoutMutation = useMutation({
     mutationFn: (params: GetWorkoutRequest) =>
       workoutService.getWorkout(params),
-    onError: (error) => {
-      console.error('Failed to fetch workout:', error)
+    onError: (error: ApiError) => {
+      toast.error(`Failed to fetch workout: ${error.message}`)
     },
   })
 
   const createMutation = useMutation({
     mutationFn: (data: CreateWorkoutRequest) =>
       workoutService.createWorkout(data),
-    onError: (error) => {
-      console.error('Failed to create workout:', error)
+    onSuccess: () => {
+      toast.success('Workout created successfully!')
+    },
+    onError: (error: ApiError) => {
+      toast.error(`Failed to create workout: ${error.message}`)
     },
   })
 
   const updateMutation = useMutation({
     mutationFn: (data: UpdateWorkoutRequest) =>
       workoutService.updateWorkout(data),
-    onError: (error) => {
-      console.error('Failed to update workout:', error)
+    onSuccess: () => {
+      toast.success('Workout updated successfully!')
+    },
+    onError: (error: ApiError) => {
+      toast.error(`Failed to update workout: ${error.message}`)
     },
   })
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => workoutService.deleteWorkout(id),
-    onError: (error) => {
-      console.error('Failed to delete workout:', error)
+    onSuccess: () => {
+      toast.success('Workout deleted successfully!')
+    },
+    onError: (error: ApiError) => {
+      toast.error(`Failed to delete workout: ${error.message}`)
     },
   })
 
