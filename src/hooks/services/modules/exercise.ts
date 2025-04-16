@@ -1,45 +1,64 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { exerciseService } from '@/services/modules/exercise'
+import type { ApiError } from '@/types/api/base'
 import type {
   CreateExerciseRequest,
   UpdateExerciseRequest,
   GetExerciseRequest,
+  GetAllExercisesRequest,
 } from '@/types/api/requests/exercise'
 
-export function useExercise() {
+export function useExercise(params?: GetAllExercisesRequest) {
   const exercisesQuery = useQuery({
-    queryKey: ['exercises'],
-    queryFn: () => exerciseService.getAllExercises(),
+    queryKey: ['exercises', params?.workoutId],
+    queryFn: () => exerciseService.getAllExercises(params),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: 2,
   })
+
+  // Handle query errors with a side effect
+  if (exercisesQuery.error) {
+    toast.error(`Failed to fetch exercises: ${exercisesQuery.error.message}`)
+  }
 
   const exerciseMutation = useMutation({
     mutationFn: (params: GetExerciseRequest) =>
       exerciseService.getExercise(params),
-    onError: (error) => {
-      console.error('Failed to fetch exercise:', error)
+    onError: (error: ApiError) => {
+      toast.error(`Failed to fetch exercise: ${error.message}`)
     },
   })
 
   const createMutation = useMutation({
     mutationFn: (data: CreateExerciseRequest) =>
       exerciseService.createExercise(data),
-    onError: (error) => {
-      console.error('Failed to create exercise:', error)
+    onSuccess: () => {
+      toast.success('Exercise created successfully!')
+    },
+    onError: (error: ApiError) => {
+      toast.error(`Failed to create exercise: ${error.message}`)
     },
   })
 
   const updateMutation = useMutation({
     mutationFn: (data: UpdateExerciseRequest) =>
       exerciseService.updateExercise(data),
-    onError: (error) => {
-      console.error('Failed to update exercise:', error)
+    onSuccess: () => {
+      toast.success('Exercise updated successfully!')
+    },
+    onError: (error: ApiError) => {
+      toast.error(`Failed to update exercise: ${error.message}`)
     },
   })
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => exerciseService.deleteExercise(id),
-    onError: (error) => {
-      console.error('Failed to delete exercise:', error)
+    onSuccess: () => {
+      toast.success('Exercise deleted successfully!')
+    },
+    onError: (error: ApiError) => {
+      toast.error(`Failed to delete exercise: ${error.message}`)
     },
   })
 
