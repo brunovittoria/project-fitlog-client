@@ -14,7 +14,7 @@ import type {
 } from '@/types/api/requests/exercise'
 import { Exercise } from '@/types/models/exercise'
 import { QueryParams } from '@/types/api/base'
-import { API_ENDPOINTS } from '@/routes'
+import { API_ENDPOINTS } from '@/services/routes'
 
 const { EXERCISE, EXERCISES } = API_ENDPOINTS
 

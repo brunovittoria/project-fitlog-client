@@ -5,7 +5,7 @@ import type {
   LoginResponse,
   RegisterResponse,
 } from '@/types/api/responses/auth'
-import { API_ENDPOINTS } from '@/routes'
+import { API_ENDPOINTS } from '@/services/routes'
 
 const { LOGIN, REGISTER } = API_ENDPOINTS
 

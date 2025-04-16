@@ -6,7 +6,7 @@ import type {
 } from '@/types/api/responses/user'
 import type { UpdateUserRequest } from '@/types/api/requests/user'
 import { User } from '@/types/models/user'
-import { API_ENDPOINTS } from '@/routes'
+import { API_ENDPOINTS } from '@/services/routes'
 
 const { PROFILE } = API_ENDPOINTS
 
