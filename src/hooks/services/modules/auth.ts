@@ -1,62 +1,40 @@
-import { useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
 import { authService } from '@/services/modules/auth'
 import type { LoginRequest, RegisterRequest } from '@/types/api/requests/auth'
-import type {
-  LoginResponse,
-  RegisterResponse,
-} from '@/types/api/responses/auth'
 
 export function useAuth() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const loginMutation = useMutation({
+    mutationFn: (credentials: LoginRequest) => authService.login(credentials),
+    onError: (error) => {
+      console.error('Login failed:', error)
+    },
+  })
 
-  async function login(
-    credentials: LoginRequest,
-  ): Promise<LoginResponse | null> {
-    try {
-      setIsLoading(true)
-      setError(null)
-      return await authService.login(credentials)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to login')
-      return null
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const registerMutation = useMutation({
+    mutationFn: (userData: RegisterRequest) => authService.register(userData),
+    onError: (error) => {
+      console.error('Registration failed:', error)
+    },
+  })
 
-  async function register(
-    userData: RegisterRequest,
-  ): Promise<RegisterResponse | null> {
-    try {
-      setIsLoading(true)
-      setError(null)
-      return await authService.register(userData)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to register')
-      return null
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  async function logout(): Promise<void> {
-    try {
-      setIsLoading(true)
-      setError(null)
-      await authService.logout()
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to logout')
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const logoutMutation = useMutation({
+    mutationFn: () => authService.logout(),
+    onError: (error) => {
+      console.error('Logout failed:', error)
+    },
+  })
 
   return {
-    isLoading,
-    error,
-    login,
-    register,
-    logout,
+    login: loginMutation.mutateAsync,
+    register: registerMutation.mutateAsync,
+    logout: logoutMutation.mutateAsync,
+    isLoading:
+      loginMutation.isPending ||
+      registerMutation.isPending ||
+      logoutMutation.isPending,
+    error:
+      loginMutation.error?.message ||
+      registerMutation.error?.message ||
+      logoutMutation.error?.message,
   }
 }
