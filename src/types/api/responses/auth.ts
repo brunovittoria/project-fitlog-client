@@ -3,7 +3,14 @@ export interface RegisterResponse {
 }
 
 export interface LoginResponse {
+  id: string
+  name: string
+  email: string
   token: string
+  subscriptions: {
+    id: string
+    status: string
+  } | null
 }
 
 export interface AuthErrorResponse {

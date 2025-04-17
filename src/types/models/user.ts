@@ -5,10 +5,10 @@ export interface User {
   name: string
   email: string
   permissions: UserPermissions
-  subscriptionId: string
-  phone: string
-  weight: number
-  height: number
+  subscriptionId: string | null
+  phone: string | null
+  weight: number | null
+  height: number | null
   created_at?: Date
   updated_at?: Date
 }
