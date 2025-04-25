@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono as GeistMono } from 'next/font/google'
 import '@/theme/globals.css'
+import '@/theme/index.css'
 import { cn } from '@/lib/utils'
 import { Providers } from './providers'
 
