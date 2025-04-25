@@ -1,6 +1,5 @@
-import { Statistics } from './Statistics'
-import pilot from '../assets/pilot.png'
 import Image from 'next/image'
+import { Statistics } from './Statistics'
 
 export const About = () => {
   return (
@@ -8,9 +7,11 @@ export const About = () => {
       <div className="bg-muted/50 rounded-lg border py-12">
         <div className="flex flex-col-reverse gap-8 px-6 md:flex-row md:gap-12">
           <Image
-            src={pilot}
-            alt=""
-            className="w-[300px] rounded-lg object-contain"
+            src="/assets/pilot.png"
+            alt="Pilot illustration"
+            width={300}
+            height={300}
+            className="rounded-lg object-contain"
           />
           <div className="bg-green-0 flex flex-col justify-between">
             <div className="pb-6">
