@@ -5,7 +5,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { MagnifierIcon, WalletIcon, ChartIcon } from './Icons'
-import cubeLeg from '../assets/cube-leg.png'
 import { JSX } from 'react'
 import Image from 'next/image'
 
@@ -73,7 +72,9 @@ export const Services = () => {
         </div>
 
         <Image
-          src={cubeLeg}
+          src="/assets/cube-leg.png"
+          width={600}
+          height={600}
           className="w-[300px] object-contain md:w-[500px] lg:w-[600px]"
           alt="About services"
         />
