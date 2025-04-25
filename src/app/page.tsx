@@ -1,3 +1,5 @@
+'use client'
+
 import { About } from '@/components/landing/About'
 import { Cta } from '@/components/landing/Cta'
 import { FAQ } from '@/components/landing/FAQ'

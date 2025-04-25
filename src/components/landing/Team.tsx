@@ -132,6 +132,8 @@ export const Team = () => {
             >
               <CardHeader className="mt-8 flex items-center justify-center pb-2">
                 <Image
+                  width={150}
+                  height={150}
                   src={imageUrl}
                   alt={`${name} ${position}`}
                   className="absolute -top-12 aspect-square h-24 w-24 rounded-full object-cover"
