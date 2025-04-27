@@ -7,21 +7,24 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { loginSchema } from '@/app/auth/login/validator'
+import { useAuthContext } from '@/contexts/AuthContext'
 import type { z } from 'zod'
 
 type LoginFormData = z.infer<typeof loginSchema>
 
 export function LoginTemplate() {
+  const { login, isLoading } = useAuthContext()
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log(data)
+    await login(data)
   }
 
   return (
@@ -70,8 +73,8 @@ export function LoginTemplate() {
                 )}
               </div>
 
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Signing in...' : 'Sign in'}
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? 'Signing in...' : 'Sign in'}
               </Button>
             </div>
           </form>
