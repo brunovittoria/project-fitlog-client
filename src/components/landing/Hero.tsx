@@ -1,9 +1,13 @@
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { HeroCards } from './HeroCards'
-import { GitHubLogoIcon } from '@radix-ui/react-icons'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export const Hero = () => {
+  const router = useRouter()
+
+  const handleLogin = () => {
+    router.push('/auth/login')
+  }
   return (
     <section className="container grid place-items-center gap-10 py-20 md:py-32 lg:grid-cols-2">
       <div className="space-y-6 text-center lg:text-start">
@@ -29,19 +33,9 @@ export const Hero = () => {
         </p>
 
         <div className="space-y-4 md:space-y-0 md:space-x-4">
-          <Button className="w-full md:w-1/3">Get Started</Button>
-
-          <Link
-            rel="noreferrer noopener"
-            href="https://github.com/leoMirandaa/shadcn-landing-page.git"
-            target="_blank"
-            className={`w-full md:w-1/3 ${buttonVariants({
-              variant: 'outline',
-            })}`}
-          >
-            Github Repository
-            <GitHubLogoIcon className="ml-2 h-5 w-5" />
-          </Link>
+          <Button className="w-full md:w-1/3" onClick={handleLogin}>
+            Login
+          </Button>
         </div>
       </div>
 
