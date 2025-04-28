@@ -5,8 +5,8 @@ import type {
   ApiResponse,
   ApiRequestConfig,
   HttpMethod,
-  ApiEndpoint,
 } from '@/types/api/base'
+import { ApiEndpoint } from '../services/routes'
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
