@@ -80,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = async (userData: RegisterRequest) => {
     await authRegister(userData)
-    router.push('/login')
+    router.push('/auth/login')
   }
 
   return (
