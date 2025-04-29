@@ -13,8 +13,20 @@ import { Team } from '@/components/landing/Team'
 import { Pricing } from '@/components/landing/Pricing'
 import { Newsletter } from '@/components/landing/Newsletter'
 import { FAQ } from '@/components/landing/FAQ'
+import { useAuthContext } from '../contexts/AuthContext'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function Home() {
+  const { isAuthenticated } = useAuthContext()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/dashboard')
+    }
+  }, [isAuthenticated, router])
+
   return (
     <LandingLayout>
       <Hero />
