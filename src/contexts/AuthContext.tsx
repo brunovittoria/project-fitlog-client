@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react'
 import { useRouter } from 'next/navigation'
-import { parseCookies } from 'nookies'
+import { parseCookies, setCookie } from 'nookies'
 import { useAuth } from '@/hooks/services/modules/auth'
 import { userService } from '@/services/modules/user'
 import type { User } from '@/types/models/user'
@@ -63,7 +63,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (credentials: LoginRequest) => {
     const response = await authLogin(credentials)
 
-    console.log('Login response:', response)
+    setCookie(undefined, '@fitlog:token', response.token, {
+      maxAge: 60 * 60 * 24 * 30,
+      path: '/',
+    })
 
     const userData: User = {
       id: response.id,
