@@ -7,10 +7,10 @@ export interface LoginResponse {
   name: string
   email: string
   token: string
-  subscriptions: {
+  subscriptions: null | {
     id: string
     status: string
-  } | null
+  }
 }
 
 export interface AuthErrorResponse {

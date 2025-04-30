@@ -18,7 +18,7 @@ export const authService = {
         data: credentials,
       },
     })
-    return response.data
+    return response
   },
 
   async register(userData: RegisterRequest): Promise<RegisterResponse> {

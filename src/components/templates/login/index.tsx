@@ -24,6 +24,7 @@ export function LoginTemplate() {
   })
 
   const onSubmit = async (data: LoginFormData) => {
+    console.log('DATA:', data)
     await login(data)
   }
 

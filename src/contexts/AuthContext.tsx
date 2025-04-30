@@ -63,11 +63,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (credentials: LoginRequest) => {
     const response = await authLogin(credentials)
 
+    // Set the cookie with the token
     setCookie(undefined, '@fitlog:token', response.token, {
-      maxAge: 60 * 60 * 24 * 30,
+      maxAge: 60 * 60 * 24 * 30, // 30 days
       path: '/',
     })
 
+    // Create user data object matching the backend response
     const userData: User = {
       id: response.id,
       name: response.name,

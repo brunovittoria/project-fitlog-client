@@ -22,8 +22,8 @@ export interface PaginatedResponse<T> {
 
 export interface ApiResponse<T> {
   data: T
+  status?: number
   message?: string
-  status: number
 }
 
 export interface QueryParams {
