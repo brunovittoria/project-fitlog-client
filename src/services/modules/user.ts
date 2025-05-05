@@ -16,7 +16,7 @@ export const userService = {
       method: 'GET',
       endpoint: PROFILE,
     })
-    return response.data.data
+    return response
   },
 
   async updateUser(userData: UpdateUserRequest): Promise<User> {
@@ -27,7 +27,7 @@ export const userService = {
         data: userData,
       },
     })
-    return response.data.data
+    return response
   },
 
   async deleteUser(): Promise<{ message: string }> {

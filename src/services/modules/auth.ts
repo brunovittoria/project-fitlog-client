@@ -29,7 +29,7 @@ export const authService = {
         data: userData,
       },
     })
-    return response.data
+    return response
   },
 
   async logout(): Promise<void> {
