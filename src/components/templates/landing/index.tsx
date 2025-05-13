@@ -1,6 +1,6 @@
 'use client'
 
-import { LandingLayout } from '@/components/layouts/LandingLayout'
+import { LandingLayout } from '../../../layouts/LandingLayout'
 import { Hero } from '@/components/landing/Hero'
 import { Sponsors } from '@/components/landing/Sponsors'
 import { About } from '@/components/landing/About'

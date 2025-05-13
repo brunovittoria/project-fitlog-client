@@ -1,4 +1,4 @@
-import { DashboardLayout } from '@/components/layouts/DashboardLayout'
+import { DashboardLayout } from '@/layouts/DashboardLayout'
 
 export default function UserPagesLayout({
   children,
