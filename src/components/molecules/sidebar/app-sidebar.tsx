@@ -157,6 +157,12 @@ const data = {
       icon: Map,
       hasCollapse: false,
     },
+    {
+      title: 'Upgrade to PRO',
+      url: '/upgrade-pro',
+      icon: Map,
+      hasCollapse: false,
+    },
   ],
 }
 
