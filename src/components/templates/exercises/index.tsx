@@ -6,6 +6,7 @@ import { ExercisesSearch } from './components/exercises-search'
 import { ExercisesCategories } from './components/exercises-categories'
 import { ExercisesList } from './components/exercises-list'
 import { EmptyExercises } from './components/empty-exercises'
+import { EXERCISE_CATEGORIES } from '@/constants/exercises'
 
 export function ExercisesTemplate() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -13,16 +14,6 @@ export function ExercisesTemplate() {
   const [expandedExercise, setExpandedExercise] = useState<number | null>(null)
 
   // Mock data
-  const categories = [
-    'All',
-    'Chest',
-    'Back',
-    'Shoulders',
-    'Arms',
-    'Legs',
-    'Core',
-    'Cardio',
-  ]
   const mockExercises = [
     {
       id: 1,
@@ -233,7 +224,7 @@ export function ExercisesTemplate() {
       <ExercisesSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
       <ExercisesCategories
-        categories={categories}
+        categories={EXERCISE_CATEGORIES}
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
       />
