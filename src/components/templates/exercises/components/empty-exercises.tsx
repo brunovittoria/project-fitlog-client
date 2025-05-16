@@ -5,11 +5,13 @@ import { Plus } from 'lucide-react'
 interface EmptyExercisesProps {
   searchTerm: string
   activeCategory: string
+  onCreate: () => void
 }
 
 export function EmptyExercises({
   searchTerm,
   activeCategory,
+  onCreate,
 }: EmptyExercisesProps) {
   return (
     <Card>
@@ -40,7 +42,7 @@ export function EmptyExercises({
 
         {!searchTerm && activeCategory === 'All' && (
           <div className="mt-6">
-            <Button>
+            <Button onClick={() => onCreate()} variant="outline">
               <Plus className="mr-2 h-4 w-4" />
               New Exercise
             </Button>

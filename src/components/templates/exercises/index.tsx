@@ -7,13 +7,30 @@ import { ExercisesCategories } from './components/exercises-categories'
 import { ExercisesList } from './components/exercises-list'
 import { EmptyExercises } from './components/empty-exercises'
 import { EXERCISE_CATEGORIES } from '@/constants/exercises'
+import { CreateExerciseDialog } from './components/dialog/create-exercise-dialog'
+import { EditExerciseDialog } from './components/dialog/edit-exercise-dialog'
+import { DeleteExerciseDialog } from './components/dialog/delete-exercise-dialog'
+
+export interface Exercise {
+  id: number
+  name: string
+  category: string
+  equipment: string
+  lastWeight?: number | null
+  personalBest?: number | null
+  duration?: string
+  progressData: Array<{ date: string; weight: number }>
+}
 
 export function ExercisesTemplate() {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
   const [expandedExercise, setExpandedExercise] = useState<number | null>(null)
-  // eslint-disable-next-line
-  const [duplicateExercise, setDuplicateExercise] = useState<any | null>(null)
+  const [isCreateOpen, setIsCreateOpen] = useState(false)
+  const [editingExercise, setEditingExercise] = useState<Exercise | null>(null)
+  const [deletingExercise, setDeletingExercise] = useState<Exercise | null>(
+    null,
+  )
 
   // Mock data
   const mockExercises = [
@@ -220,21 +237,39 @@ export function ExercisesTemplate() {
   )
 
   // eslint-disable-next-line
-  const handleDuplicate = (exercise: any) => {
+  const handleCreate = (data: any) => {
+    console.log('Create exercise', data)
+    setIsCreateOpen(false)
+    // In a real app, you would call an API here
+  }
+
+  // eslint-disable-next-line
+  const handleEditSubmit = (data: any) => {
+    console.log('Update exercise', editingExercise?.id, data)
+    setEditingExercise(null)
+    // In a real app, you would call an API here
+  }
+
+  const handleDelete = () => {
+    console.log('Delete exercise', deletingExercise?.id)
+    setDeletingExercise(null)
+    // In a real app, you would call an API here
+  }
+
+  const handleDuplicate = (exercise: Exercise) => {
     const newExercise = {
       ...exercise,
-      id: Date.now(), // In a real app, this would be handled by the backend
+      id: Date.now(),
       name: `${exercise.name} (Copy)`,
-      progressData: [], // Reset progress data for the new copy
+      progressData: [],
     }
-
-    // In a real app, you would call an API here
     console.log('Duplicate exercise', newExercise)
+    // In a real app, you would call an API here
   }
 
   return (
     <div className="space-y-6">
-      <ExercisesHeader />
+      <ExercisesHeader onCreate={() => setIsCreateOpen(true)} />
 
       <ExercisesSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
@@ -250,13 +285,43 @@ export function ExercisesTemplate() {
           expandedExercise={expandedExercise}
           setExpandedExercise={setExpandedExercise}
           onDuplicate={handleDuplicate}
+          onEdit={setEditingExercise}
+          onDelete={setDeletingExercise}
         />
       ) : (
         <EmptyExercises
           searchTerm={searchTerm}
           activeCategory={activeCategory}
+          onCreate={() => setIsCreateOpen(true)}
         />
       )}
+
+      <CreateExerciseDialog
+        open={isCreateOpen}
+        onOpenChange={setIsCreateOpen}
+        categories={EXERCISE_CATEGORIES.filter((cat) => cat !== 'All')}
+        onSubmit={handleCreate}
+      />
+
+      <EditExerciseDialog
+        open={!!editingExercise}
+        onOpenChange={(open) => !open && setEditingExercise(null)}
+        exercise={{
+          name: editingExercise?.name ?? '',
+          category: editingExercise?.category ?? '',
+          equipment: editingExercise?.equipment ?? '',
+          lastWeight: editingExercise?.lastWeight ?? null,
+        }}
+        categories={EXERCISE_CATEGORIES.filter((cat) => cat !== 'All')}
+        onSubmit={handleEditSubmit}
+      />
+
+      <DeleteExerciseDialog
+        open={!!deletingExercise}
+        onOpenChange={(open) => !open && setDeletingExercise(null)}
+        exerciseName={deletingExercise?.name ?? ''}
+        onConfirm={handleDelete}
+      />
     </div>
   )
 }

@@ -5,19 +5,25 @@ import { WorkoutsHeader } from './components/workouts-header'
 import { WorkoutsSearch } from './components/workouts-search'
 import { WorkoutsTable } from './components/workouts-table'
 import { EmptyWorkouts } from './components/empty-workouts'
+import { CreateWorkoutDialog } from './components/dialog/create-workout-dialog'
 import { EditWorkoutDialog } from './components/dialog/edit-workout-dialog'
 import { DeleteWorkoutDialog } from './components/dialog/delete-workout-dialog'
+
+export interface Workout {
+  id: number
+  name: string
+  exercises: number
+  lastPerformed: string
+  duration: string
+  category: string
+}
 
 export function WorkoutsTemplate() {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
-  // eslint-disable-next-line
-  const [duplicateWorkout, setDuplicateWorkout] = useState<any | null>(null)
-
-  // eslint-disable-next-line
-  const [editingWorkout, setEditingWorkout] = useState<any | null>(null)
-  // eslint-disable-next-line
-  const [deletingWorkout, setDeletingWorkout] = useState<any | null>(null)
+  const [isCreateOpen, setIsCreateOpen] = useState(false)
+  const [editingWorkout, setEditingWorkout] = useState<Workout | null>(null)
+  const [deletingWorkout, setDeletingWorkout] = useState<Workout | null>(null)
 
   const mockWorkouts = [
     {
@@ -35,6 +41,12 @@ export function WorkoutsTemplate() {
       workout.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       workout.category.toLowerCase().includes(searchTerm.toLowerCase()),
   )
+  // eslint-disable-next-line
+  const handleCreate = (data: any) => {
+    console.log('Create workout', data)
+    setIsCreateOpen(false)
+    // In a real app, you would call an API here;
+  }
   // eslint-disable-next-line
   const handleEditSubmit = (data: any) => {
     console.log('Update workout', editingWorkout?.id, data)
@@ -61,7 +73,7 @@ export function WorkoutsTemplate() {
 
   return (
     <div className="space-y-6">
-      <WorkoutsHeader />
+      <WorkoutsHeader onCreate={() => setIsCreateOpen(true)} />
 
       <WorkoutsSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
@@ -75,8 +87,17 @@ export function WorkoutsTemplate() {
           onDuplicate={handleDuplicate}
         />
       ) : (
-        <EmptyWorkouts searchTerm={searchTerm} />
+        <EmptyWorkouts
+          searchTerm={searchTerm}
+          onCreate={() => setIsCreateOpen(true)}
+        />
       )}
+
+      <CreateWorkoutDialog
+        open={isCreateOpen}
+        onOpenChange={setIsCreateOpen}
+        onSubmit={handleCreate}
+      />
 
       <EditWorkoutDialog
         open={!!editingWorkout}

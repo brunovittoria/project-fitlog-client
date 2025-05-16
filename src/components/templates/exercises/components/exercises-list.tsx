@@ -7,10 +7,6 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
 import { BarChart2, ChevronDown, ChevronUp, Copy, Info } from 'lucide-react'
-import { useState } from 'react'
-import { EditExerciseDialog } from './dialog/edit-exercise-dialog'
-import { DeleteExerciseDialog } from './dialog/delete-exercise-dialog'
-import { EXERCISE_CATEGORIES_ARRAY } from '@/constants/exercises'
 
 interface Exercise {
   id: number
@@ -28,6 +24,8 @@ interface ExercisesListProps {
   expandedExercise: number | null
   setExpandedExercise: (id: number | null) => void
   onDuplicate: (exercise: Exercise) => void
+  onEdit: (exercise: Exercise) => void
+  onDelete: (exercise: Exercise) => void
 }
 
 export function ExercisesList({
@@ -35,23 +33,9 @@ export function ExercisesList({
   expandedExercise,
   setExpandedExercise,
   onDuplicate,
+  onEdit,
+  onDelete,
 }: ExercisesListProps) {
-  const [editingExercise, setEditingExercise] = useState<Exercise | null>(null)
-  const [deletingExercise, setDeletingExercise] = useState<Exercise | null>(
-    null,
-  )
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleEditSubmit = (data: any) => {
-    console.log('Update exercise', editingExercise?.id, data)
-    setEditingExercise(null)
-  }
-
-  const handleDelete = () => {
-    console.log('Delete exercise', deletingExercise?.id)
-    setDeletingExercise(null)
-  }
-
   return (
     <>
       <div className="space-y-4">
@@ -163,13 +147,13 @@ export function ExercisesList({
                     <div className="flex gap-2">
                       <Button
                         variant="outline"
-                        onClick={() => setEditingExercise(exercise)}
+                        onClick={() => onEdit(exercise)}
                       >
                         Edit Progress
                       </Button>
                       <Button
                         variant="destructive"
-                        onClick={() => setDeletingExercise(exercise)}
+                        onClick={() => onDelete(exercise)}
                       >
                         Delete Exercise
                       </Button>
@@ -177,7 +161,7 @@ export function ExercisesList({
                     <div className="flex gap-2">
                       <Button>Log Exercise</Button>
                       <Button
-                        variant={'outline'}
+                        variant="outline"
                         onClick={() => onDuplicate(exercise)}
                       >
                         <Copy className="mr-2 h-4 w-4" />
@@ -191,26 +175,6 @@ export function ExercisesList({
           </Card>
         ))}
       </div>
-
-      <EditExerciseDialog
-        open={!!editingExercise}
-        onOpenChange={(open) => !open && setEditingExercise(null)}
-        exercise={{
-          name: editingExercise?.name ?? '',
-          category: editingExercise?.category ?? '',
-          equipment: editingExercise?.equipment ?? '',
-          lastWeight: editingExercise?.lastWeight ?? null,
-        }}
-        categories={EXERCISE_CATEGORIES_ARRAY.filter((cat) => cat !== 'All')}
-        onSubmit={handleEditSubmit}
-      />
-
-      <DeleteExerciseDialog
-        open={!!deletingExercise}
-        onOpenChange={(open) => !open && setDeletingExercise(null)}
-        exerciseName={deletingExercise?.name ?? ''}
-        onConfirm={handleDelete}
-      />
     </>
   )
 }

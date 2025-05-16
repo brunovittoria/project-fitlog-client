@@ -4,9 +4,10 @@ import { Plus } from 'lucide-react'
 
 interface EmptyWorkoutsProps {
   searchTerm: string
+  onCreate: () => void
 }
 
-export function EmptyWorkouts({ searchTerm }: EmptyWorkoutsProps) {
+export function EmptyWorkouts({ searchTerm, onCreate }: EmptyWorkoutsProps) {
   return (
     <Card>
       <CardContent className="p-8 text-center">
@@ -36,7 +37,7 @@ export function EmptyWorkouts({ searchTerm }: EmptyWorkoutsProps) {
 
         {!searchTerm && (
           <div className="mt-6">
-            <Button>
+            <Button onClick={() => onCreate()} variant="outline">
               <Plus className="mr-2 h-4 w-4" />
               New Workout
             </Button>
