@@ -36,12 +36,16 @@ interface WorkoutsTableProps {
   workouts: Workout[]
   activeDropdown: number | null
   setActiveDropdown: (id: number | null) => void
+  onEdit: (workout: Workout) => void
+  onDelete: (workout: Workout) => void
 }
 
 export function WorkoutsTable({
-  workouts,
   // activeDropdown,
   // setActiveDropdown,
+  workouts,
+  onEdit,
+  onDelete,
 }: WorkoutsTableProps) {
   return (
     <div className="rounded-md border">
@@ -86,7 +90,7 @@ export function WorkoutsTable({
                       <ChevronRight className="mr-2 h-4 w-4" />
                       Start Workout
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => onEdit(workout)}>
                       <Edit className="mr-2 h-4 w-4" />
                       Edit
                     </DropdownMenuItem>
@@ -94,7 +98,10 @@ export function WorkoutsTable({
                       <Copy className="mr-2 h-4 w-4" />
                       Duplicate
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-destructive">
+                    <DropdownMenuItem
+                      onClick={() => onDelete(workout)}
+                      className="text-destructive"
+                    >
                       <Trash className="mr-2 h-4 w-4" />
                       Delete
                     </DropdownMenuItem>
