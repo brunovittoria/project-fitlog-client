@@ -6,7 +6,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
-import { BarChart2, ChevronDown, ChevronUp, Info } from 'lucide-react'
+import { BarChart2, ChevronDown, ChevronUp, Copy, Info } from 'lucide-react'
 import { useState } from 'react'
 import { EditExerciseDialog } from './dialog/edit-exercise-dialog'
 import { DeleteExerciseDialog } from './dialog/delete-exercise-dialog'
@@ -27,12 +27,14 @@ interface ExercisesListProps {
   exercises: Exercise[]
   expandedExercise: number | null
   setExpandedExercise: (id: number | null) => void
+  onDuplicate: (exercise: Exercise) => void
 }
 
 export function ExercisesList({
   exercises,
   expandedExercise,
   setExpandedExercise,
+  onDuplicate,
 }: ExercisesListProps) {
   const [editingExercise, setEditingExercise] = useState<Exercise | null>(null)
   const [deletingExercise, setDeletingExercise] = useState<Exercise | null>(
@@ -174,7 +176,13 @@ export function ExercisesList({
                     </div>
                     <div className="flex gap-2">
                       <Button>Log Exercise</Button>
-                      <Button variant={'outline'}>Duplicate Exercise</Button>
+                      <Button
+                        variant={'outline'}
+                        onClick={() => onDuplicate(exercise)}
+                      >
+                        <Copy className="mr-2 h-4 w-4" />
+                        Duplicate Exercise
+                      </Button>
                     </div>
                   </div>
                 </CardContent>

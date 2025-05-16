@@ -11,6 +11,8 @@ import { DeleteWorkoutDialog } from './components/dialog/delete-workout-dialog'
 export function WorkoutsTemplate() {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
+  // eslint-disable-next-line
+  const [duplicateWorkout, setDuplicateWorkout] = useState<any | null>(null)
 
   // eslint-disable-next-line
   const [editingWorkout, setEditingWorkout] = useState<any | null>(null)
@@ -44,6 +46,19 @@ export function WorkoutsTemplate() {
     setDeletingWorkout(null)
   }
 
+  // eslint-disable-next-line
+  const handleDuplicate = (workout: any) => {
+    const newWorkout = {
+      ...workout,
+      id: Date.now(), // In a real app, this would be handled by the backend
+      name: `${workout.name} (Copy)`,
+      lastPerformed: '', // Reset last performed date
+    }
+
+    // In a real app, you would call an API here
+    console.log('Duplicate workout', newWorkout)
+  }
+
   return (
     <div className="space-y-6">
       <WorkoutsHeader />
@@ -57,6 +72,7 @@ export function WorkoutsTemplate() {
           setActiveDropdown={setActiveDropdown}
           onEdit={setEditingWorkout}
           onDelete={setDeletingWorkout}
+          onDuplicate={handleDuplicate}
         />
       ) : (
         <EmptyWorkouts searchTerm={searchTerm} />

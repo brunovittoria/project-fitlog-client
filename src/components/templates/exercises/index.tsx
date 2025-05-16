@@ -12,6 +12,8 @@ export function ExercisesTemplate() {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')
   const [expandedExercise, setExpandedExercise] = useState<number | null>(null)
+  // eslint-disable-next-line
+  const [duplicateExercise, setDuplicateExercise] = useState<any | null>(null)
 
   // Mock data
   const mockExercises = [
@@ -217,6 +219,19 @@ export function ExercisesTemplate() {
       exercise.name.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
+  // eslint-disable-next-line
+  const handleDuplicate = (exercise: any) => {
+    const newExercise = {
+      ...exercise,
+      id: Date.now(), // In a real app, this would be handled by the backend
+      name: `${exercise.name} (Copy)`,
+      progressData: [], // Reset progress data for the new copy
+    }
+
+    // In a real app, you would call an API here
+    console.log('Duplicate exercise', newExercise)
+  }
+
   return (
     <div className="space-y-6">
       <ExercisesHeader />
@@ -234,6 +249,7 @@ export function ExercisesTemplate() {
           exercises={filteredExercises}
           expandedExercise={expandedExercise}
           setExpandedExercise={setExpandedExercise}
+          onDuplicate={handleDuplicate}
         />
       ) : (
         <EmptyExercises

@@ -38,6 +38,7 @@ interface WorkoutsTableProps {
   setActiveDropdown: (id: number | null) => void
   onEdit: (workout: Workout) => void
   onDelete: (workout: Workout) => void
+  onDuplicate: (workout: Workout) => void
 }
 
 export function WorkoutsTable({
@@ -46,6 +47,7 @@ export function WorkoutsTable({
   workouts,
   onEdit,
   onDelete,
+  onDuplicate,
 }: WorkoutsTableProps) {
   return (
     <div className="rounded-md border">
@@ -94,7 +96,7 @@ export function WorkoutsTable({
                       <Edit className="mr-2 h-4 w-4" />
                       Edit
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => onDuplicate(workout)}>
                       <Copy className="mr-2 h-4 w-4" />
                       Duplicate
                     </DropdownMenuItem>
