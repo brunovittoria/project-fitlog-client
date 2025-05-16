@@ -22,6 +22,7 @@ import {
   Copy,
   Trash,
 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 interface Workout {
   id: number
@@ -49,6 +50,10 @@ export function WorkoutsTable({
   onDelete,
   onDuplicate,
 }: WorkoutsTableProps) {
+  const router = useRouter()
+
+  // Ao clicar para o Workout em especifico o user deve ir para = router.push(`/start-workout/${workout.id}`)
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -88,7 +93,9 @@ export function WorkoutsTable({
                     <MoreVertical className="h-4 w-4" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => router.push(`/start-workout`)}
+                    >
                       <ChevronRight className="mr-2 h-4 w-4" />
                       Start Workout
                     </DropdownMenuItem>
