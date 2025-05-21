@@ -1,21 +1,37 @@
 export interface CreateExerciseRequest {
   workoutId: string
   name: string
+  category: string
+  equipment: string
   type: 'strength' | 'cardio' | 'mobility'
   reps?: number
   sets?: number
   weight?: number
-  duration?: number
+  lastWeight?: number | null
+  personalBest?: number | null
+  duration?: number | null
+  progressData?: Array<{
+    date: string
+    weight: number
+  }>
 }
 
 export interface UpdateExerciseRequest {
   id: string
   name?: string
+  category?: string
+  equipment?: string
   type?: 'strength' | 'cardio' | 'mobility'
   reps?: number
   sets?: number
   weight?: number
-  duration?: number
+  lastWeight?: number | null
+  personalBest?: number | null
+  duration?: number | null
+  progressData?: Array<{
+    date: string
+    weight: number
+  }>
 }
 
 export interface GetExerciseRequest {
@@ -28,5 +44,6 @@ export interface DeleteExerciseRequest {
 
 export interface GetAllExercisesRequest extends Record<string, unknown> {
   workoutId?: string
+  category?: string
   type?: 'strength' | 'cardio' | 'mobility'
 }
