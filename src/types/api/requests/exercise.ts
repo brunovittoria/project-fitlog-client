@@ -1,3 +1,5 @@
+import { Exercise } from '../../models/exercise'
+
 export interface CreateExerciseRequest {
   workoutId: string
   name: string
@@ -7,13 +9,17 @@ export interface CreateExerciseRequest {
   reps?: number
   sets?: number
   weight?: number
-  lastWeight?: number | null
-  personalBest?: number | null
-  duration?: number | null
+  lastWeight?: number
+  personalBest?: number
+  duration?: number
   progressData?: Array<{
     date: string
     weight: number
   }>
+}
+
+export type ExerciseWithStringDuration = Omit<Exercise, 'duration'> & {
+  duration?: string
 }
 
 export interface UpdateExerciseRequest {

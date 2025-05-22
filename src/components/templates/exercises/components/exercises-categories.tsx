@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 interface ExercisesCategoriesProps {
-  categories: readonly string[] // Update to accept readonly array
+  categories: readonly string[]
   activeCategory: string
   setActiveCategory: (category: string) => void
 }

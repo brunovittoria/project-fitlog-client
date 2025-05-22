@@ -18,13 +18,7 @@ import { InfoIcon, Save } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-const createExerciseSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  category: z.string().min(1, 'Category is required'),
-  equipment: z.string().min(1, 'Equipment is required'),
-  weight: z.string().optional(),
-})
+import { createExerciseSchema } from '../../validation'
 
 type CreateExerciseForm = z.infer<typeof createExerciseSchema>
 
@@ -32,7 +26,7 @@ interface CreateExerciseDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   categories: string[]
-  onSubmit: (data: CreateExerciseForm) => void
+  onSubmit: (data: z.infer<typeof createExerciseSchema>) => Promise<void>
 }
 
 export function CreateExerciseDialog({

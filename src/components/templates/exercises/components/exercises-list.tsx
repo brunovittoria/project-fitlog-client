@@ -7,25 +7,19 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
 import { BarChart2, ChevronDown, ChevronUp, Copy, Info } from 'lucide-react'
+import { Exercise } from '@/types/models/exercise'
 
-interface Exercise {
-  id: number
-  name: string
-  category: string
-  equipment: string
-  lastWeight?: number | null
-  personalBest?: number | null
+type ExerciseWithStringDuration = Omit<Exercise, 'duration'> & {
   duration?: string
-  progressData: { date: string; weight: number }[]
 }
 
 interface ExercisesListProps {
-  exercises: Exercise[]
-  expandedExercise: number | null
-  setExpandedExercise: (id: number | null) => void
-  onDuplicate: (exercise: Exercise) => void
-  onEdit: (exercise: Exercise) => void
-  onDelete: (exercise: Exercise) => void
+  exercises: ExerciseWithStringDuration[]
+  expandedExercise: string | null
+  setExpandedExercise: (id: string | null) => void
+  onDuplicate: (exercise: ExerciseWithStringDuration) => Promise<void>
+  onEdit: (exercise: ExerciseWithStringDuration) => void
+  onDelete: (exercise: ExerciseWithStringDuration) => void
 }
 
 export function ExercisesList({

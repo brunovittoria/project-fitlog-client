@@ -18,13 +18,7 @@ import {
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-const editExerciseSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  category: z.string().min(1, 'Category is required'),
-  equipment: z.string().min(1, 'Equipment is required'),
-  weight: z.string().optional(),
-})
+import { editExerciseSchema } from '../../validation'
 
 type EditExerciseForm = z.infer<typeof editExerciseSchema>
 
@@ -38,7 +32,7 @@ interface EditExerciseDialogProps {
     lastWeight?: number | null
   }
   categories: string[]
-  onSubmit: (data: EditExerciseForm) => void
+  onSubmit: (data: z.infer<typeof editExerciseSchema>) => Promise<void>
 }
 
 export function EditExerciseDialog({

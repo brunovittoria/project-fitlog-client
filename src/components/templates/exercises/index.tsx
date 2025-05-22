@@ -13,7 +13,10 @@ import { CreateExerciseDialog } from './components/dialog/create-exercise-dialog
 import { EditExerciseDialog } from './components/dialog/edit-exercise-dialog'
 import { DeleteExerciseDialog } from './components/dialog/delete-exercise-dialog'
 import { Exercise } from '@/types/models/exercise'
-import { CreateExerciseRequest, UpdateExerciseRequest } from '../../../types'
+import { z } from 'zod'
+import { createExerciseSchema, editExerciseSchema } from './validation'
+import { CreateExerciseRequest } from '../../../types'
+import { ExerciseWithStringDuration } from '../../../types/api/requests/exercise'
 
 export function ExercisesTemplate() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -44,44 +47,78 @@ export function ExercisesTemplate() {
       (exercise) =>
         (activeCategory === 'All' || exercise.category === activeCategory) &&
         exercise.name.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
+    ) as Array<Omit<Exercise, 'duration'> & { duration?: string }>
 
-  const handleCreate = async (data: CreateExerciseRequest) => {
+  const handleCreate = async (data: z.infer<typeof createExerciseSchema>) => {
     await createExercise({
       ...data,
-      duration: data.duration ? parseInt(data.duration) : null,
+      workoutId: data.workoutId,
       type: data.category === 'Cardio' ? 'cardio' : 'strength',
+      duration: data.duration ? Number(data.duration) : undefined,
+      weight: data.weight ? Number(data.weight) : undefined,
+      progressData: [],
     })
     setIsCreateOpen(false)
   }
 
-  const handleEditSubmit = async (data: UpdateExerciseRequest) => {
+  const handleEdit = (exercise: ExerciseWithStringDuration) => {
+    const originalExercise: Exercise = {
+      ...exercise,
+      duration: exercise.duration
+        ? Number(exercise.duration.split(' ')[0])
+        : null,
+    }
+    setEditingExercise(originalExercise)
+  }
+
+  const handleEditSubmit = async (data: z.infer<typeof editExerciseSchema>) => {
     if (!editingExercise) return
 
     await updateExercise({
-      id: editingExercise.id,
       ...data,
-      duration: data.duration ? parseInt(data.duration) : null,
+      id: editingExercise.id,
+      type: data.category === 'Cardio' ? 'cardio' : 'strength',
+      duration: data.duration ? Number(data.duration) : undefined,
+      weight: data.weight ? Number(data.weight) : undefined,
     })
     setEditingExercise(null)
   }
 
-  const handleDelete = async () => {
+  const handleDelete = (exercise: ExerciseWithStringDuration) => {
+    const originalExercise: Exercise = {
+      ...exercise,
+      duration: exercise.duration
+        ? Number(exercise.duration.split(' ')[0])
+        : null,
+    }
+    setDeletingExercise(originalExercise)
+  }
+
+  const handleConfirmDelete = async () => {
     if (!deletingExercise) return
 
     await deleteExercise(deletingExercise.id)
     setDeletingExercise(null)
   }
 
-  const handleDuplicate = (exercise: Exercise) => {
-    const newExercise = {
-      ...exercise,
-      id: Date.now(),
+  const handleDuplicate = async (exercise: ExerciseWithStringDuration) => {
+    const type =
+      exercise.category === 'Cardio' ? 'cardio' : ('strength' as const)
+
+    const newExercise: CreateExerciseRequest = {
       name: `${exercise.name} (Copy)`,
+      workoutId: exercise.workoutId,
+      category: exercise.category,
+      equipment: exercise.equipment,
+      type,
+      duration: exercise.duration
+        ? Number(exercise.duration.split(' ')[0])
+        : undefined,
+      weight: exercise.weight,
       progressData: [],
     }
-    console.log('Duplicate exercise', newExercise)
-    // In a real app, you would call an API here
+
+    await createExercise(newExercise)
   }
 
   return (
@@ -102,8 +139,8 @@ export function ExercisesTemplate() {
           expandedExercise={expandedExercise}
           setExpandedExercise={setExpandedExercise}
           onDuplicate={handleDuplicate}
-          onEdit={setEditingExercise}
-          onDelete={setDeletingExercise}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
         />
       ) : (
         <EmptyExercises
@@ -137,7 +174,7 @@ export function ExercisesTemplate() {
         open={!!deletingExercise}
         onOpenChange={(open) => !open && setDeletingExercise(null)}
         exerciseName={deletingExercise?.name ?? ''}
-        onConfirm={handleDelete}
+        onConfirm={handleConfirmDelete}
       />
     </div>
   )
