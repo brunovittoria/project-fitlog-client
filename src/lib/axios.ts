@@ -1,11 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { parseCookies } from 'nookies'
-import type {
-  ApiError,
-  ApiResponse,
-  ApiRequestConfig,
-  HttpMethod,
-} from '@/types/api/base'
+import type { ApiError, ApiRequestConfig, HttpMethod } from '@/types/api/base'
 import { ApiEndpoint } from '../services/routes'
 
 export const axiosInstance = axios.create({
@@ -36,9 +31,9 @@ export async function api<T>({
   method: HttpMethod
   endpoint: ApiEndpoint
   config?: ApiRequestConfig
-}): Promise<ApiResponse<T>> {
+}): Promise<T> {
   try {
-    const response = await axiosInstance.request<ApiResponse<T>>({
+    const response = await axiosInstance.request<T>({
       method,
       url: endpoint,
       params: config?.params,

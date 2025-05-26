@@ -1,5 +1,8 @@
 export interface RegisterResponse {
-  token: string
+  data: {
+    token: string
+  }
+  message?: string
 }
 
 export interface LoginResponse {
