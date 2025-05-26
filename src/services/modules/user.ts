@@ -16,6 +16,7 @@ export const userService = {
       method: 'GET',
       endpoint: PROFILE,
     })
+    console.log('User profile response SERVICE:', response)
     return response
   },
 

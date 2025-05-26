@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = useCallback(async () => {
     await authLogout()
     setUser(null)
-    router.push('/login')
+    router.push('auth/login')
   }, [authLogout, router])
 
   useEffect(() => {
@@ -49,6 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (token) {
         const userData = await userService.getUserProfile()
+        console.log('User profile response:', userData)
         if (userData) {
           setUser(userData)
         } else {
