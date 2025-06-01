@@ -27,7 +27,7 @@ export const exerciseService = {
         params: params as QueryParams,
       },
     })
-    return response.data.data
+    return response.data
   },
 
   async getExercise(params: GetExerciseRequest): Promise<Exercise> {
@@ -35,7 +35,7 @@ export const exerciseService = {
       method: 'GET',
       endpoint: `${EXERCISE}/${params.id}`,
     })
-    return response.data.data
+    return response.data
   },
 
   async createExercise(exerciseData: CreateExerciseRequest): Promise<Exercise> {
@@ -46,7 +46,7 @@ export const exerciseService = {
         data: exerciseData,
       },
     })
-    return response.data.data
+    return response.data
   },
 
   async updateExercise(exerciseData: UpdateExerciseRequest): Promise<Exercise> {
@@ -58,7 +58,7 @@ export const exerciseService = {
         data,
       },
     })
-    return response.data.data
+    return response.data
   },
 
   async deleteExercise(id: string): Promise<{ message: string }> {
