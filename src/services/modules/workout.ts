@@ -26,7 +26,7 @@ export const workoutService = {
         params: { userId },
       },
     })
-    return response.data.data
+    return response.data ?? []
   },
 
   async getWorkout(params: GetWorkoutRequest): Promise<Workout> {
@@ -34,7 +34,7 @@ export const workoutService = {
       method: 'GET',
       endpoint: WORKOUT_BY_ID(params.id),
     })
-    return response.data.data
+    return response.data
   },
 
   async createWorkout(workoutData: CreateWorkoutRequest): Promise<Workout> {
@@ -45,7 +45,7 @@ export const workoutService = {
         data: workoutData,
       },
     })
-    return response.data.data
+    return response.data
   },
 
   async updateWorkout(workoutData: UpdateWorkoutRequest): Promise<Workout> {
@@ -57,7 +57,7 @@ export const workoutService = {
         data,
       },
     })
-    return response.data.data
+    return response.data
   },
 
   async deleteWorkout(id: string): Promise<{ message: string }> {

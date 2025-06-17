@@ -17,6 +17,9 @@ import { z } from 'zod'
 import { createExerciseSchema, editExerciseSchema } from './validation'
 import { CreateExerciseRequest } from '../../../types'
 import { ExerciseWithStringDuration } from '../../../types/api/requests/exercise'
+import { useGetProfile } from '@/hooks/services/modules/user'
+import { useWorkout } from '@/hooks/services/modules/workout'
+import type { Workout } from '@/types/models/workout'
 
 export function ExercisesTemplate() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -35,6 +38,10 @@ export function ExercisesTemplate() {
     deleteExercise,
     // isLoading,
   } = useExercise()
+
+  const { profile } = useGetProfile()
+  const userId = profile?.id
+  const { workouts } = useWorkout(userId || '')
 
   const filteredExercises = exercises
     .map((exercise) => ({
@@ -154,6 +161,7 @@ export function ExercisesTemplate() {
         open={isCreateOpen}
         onOpenChange={setIsCreateOpen}
         categories={EXERCISE_CATEGORIES.filter((cat) => cat !== 'All')}
+        workouts={workouts as Workout[]}
         onSubmit={handleCreate}
       />
 

@@ -19,6 +19,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createExerciseSchema } from '../../validation'
+import type { Workout } from '@/types/models/workout'
 
 type CreateExerciseForm = z.infer<typeof createExerciseSchema>
 
@@ -26,6 +27,7 @@ interface CreateExerciseDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   categories: string[]
+  workouts: Workout[]
   onSubmit: (data: z.infer<typeof createExerciseSchema>) => Promise<void>
 }
 
@@ -33,6 +35,7 @@ export function CreateExerciseDialog({
   open,
   onOpenChange,
   categories,
+  workouts,
   onSubmit,
 }: CreateExerciseDialogProps) {
   const form = useForm<CreateExerciseForm>({
@@ -42,27 +45,51 @@ export function CreateExerciseDialog({
       category: '',
       equipment: '',
       weight: '',
+      workoutId: '',
     },
   })
+
+  const handleSubmitWithLog = async (
+    data: z.infer<typeof createExerciseSchema>,
+  ) => {
+    console.log('CreateExerciseDialog onSubmit', data)
+    await onSubmit(data)
+  }
 
   return (
     <DialogWrapper
       open={open}
       onOpenChange={onOpenChange}
       title="Create Exercise"
-      footer={
-        <>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button onClick={form.handleSubmit(onSubmit)} type="submit">
-            <Save className="mr-2 h-4 w-4" />
-            Create Exercise
-          </Button>
-        </>
-      }
     >
-      <form className="space-y-4">
+      <form
+        className="space-y-4"
+        onSubmit={form.handleSubmit(handleSubmitWithLog)}
+      >
+        <div className="space-y-2">
+          <Label htmlFor="workoutId">Workout</Label>
+          <Select
+            value={form.watch('workoutId')}
+            onValueChange={(value) => form.setValue('workoutId', value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select a workout" />
+            </SelectTrigger>
+            <SelectContent>
+              {workouts.map((workout) => (
+                <SelectItem key={workout.id} value={workout.id}>
+                  {workout.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {form.formState.errors.workoutId && (
+            <span className="xs text-red-500">
+              {form.formState.errors.workoutId.message as string}
+            </span>
+          )}
+        </div>
+
         <div className="space-y-2">
           <Label htmlFor="name">Exercise Name</Label>
           <Input
@@ -137,6 +164,15 @@ export function CreateExerciseDialog({
             step="0.5"
             min="0"
           />
+        </div>
+        <div className="flex justify-end gap-2">
+          <Button type="submit" disabled={workouts.length === 0}>
+            <Save className="mr-2 h-4 w-4" />
+            Create Exercise
+          </Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
         </div>
       </form>
     </DialogWrapper>

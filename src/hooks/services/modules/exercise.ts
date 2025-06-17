@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { exerciseService } from '@/services/modules/exercise'
 import type { ApiError } from '@/types/api/base'
@@ -10,6 +10,7 @@ import type {
 } from '@/types/api/requests/exercise'
 
 export function useExercise(params?: GetAllExercisesRequest) {
+  const queryClient = useQueryClient()
   const exercisesQuery = useQuery({
     queryKey: ['exercises', params?.workoutId],
     queryFn: () => exerciseService.getAllExercises(params),
@@ -35,6 +36,7 @@ export function useExercise(params?: GetAllExercisesRequest) {
       exerciseService.createExercise(data),
     onSuccess: () => {
       toast.success('Exercise created successfully!')
+      queryClient.invalidateQueries({ queryKey: ['exercises'] })
     },
     onError: (error: ApiError) => {
       toast.error(`Failed to create exercise: ${error.message}`)
