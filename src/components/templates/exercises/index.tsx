@@ -57,10 +57,23 @@ export function ExercisesTemplate() {
     ) as Array<Omit<Exercise, 'duration'> & { duration?: string }>
 
   const handleCreate = async (data: z.infer<typeof createExerciseSchema>) => {
+    const getExerciseType = (
+      category: string,
+    ): 'strength' | 'cardio' | 'mobility' => {
+      const lowerCaseCategory = category.toLowerCase()
+      if (lowerCaseCategory === 'cardio') {
+        return 'cardio'
+      }
+      if (lowerCaseCategory === 'mobility') {
+        return 'mobility'
+      }
+      return 'strength'
+    }
+
     await createExercise({
       ...data,
       workoutId: data.workoutId,
-      type: data.category === 'Cardio' ? 'cardio' : 'strength',
+      type: getExerciseType(data.category),
       duration: data.duration ? Number(data.duration) : undefined,
       weight: data.weight ? Number(data.weight) : undefined,
       progressData: [],

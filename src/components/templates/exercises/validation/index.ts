@@ -5,7 +5,6 @@ export const createExerciseSchema = z.object({
   category: z.string().min(1, 'Category is required'),
   equipment: z.string().min(1, 'Equipment is required'),
   workoutId: z.string().min(1, 'Workout is required'),
-  type: z.enum(['strength', 'cardio', 'mobility']),
   weight: z.string().optional(),
   duration: z.string().optional(),
   progressData: z
