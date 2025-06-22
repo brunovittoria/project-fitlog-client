@@ -19,6 +19,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { editExerciseSchema } from '../../validation'
+import { useEffect } from 'react'
 
 type EditExerciseForm = z.infer<typeof editExerciseSchema>
 
@@ -52,6 +53,21 @@ export function EditExerciseDialog({
     },
   })
 
+  useEffect(() => {
+    if (exercise) {
+      form.reset({
+        name: exercise.name,
+        category: exercise.category,
+        equipment: exercise.equipment,
+      })
+    }
+  }, [exercise, form])
+
+  const handleFormSubmit = async (data: EditExerciseForm) => {
+    await onSubmit(data)
+    onOpenChange(false)
+  }
+
   return (
     <DialogWrapper
       open={open}
@@ -62,7 +78,7 @@ export function EditExerciseDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={form.handleSubmit(onSubmit)} type="submit">
+          <Button onClick={form.handleSubmit(handleFormSubmit)} type="submit">
             <Save className="mr-2 h-4 w-4" />
             Save Changes
           </Button>
@@ -126,11 +142,28 @@ export function EditExerciseDialog({
 
         <div className="space-y-2">
           <Label htmlFor="equipment">Equipment</Label>
-          <Input
-            id="equipment"
-            {...form.register('equipment')}
-            placeholder="Enter equipment used"
-          />
+          <Select
+            value={form.watch('equipment')}
+            onValueChange={(value) => form.setValue('equipment', value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select equipment" />
+            </SelectTrigger>
+            <SelectContent>
+              {[
+                'Barbell',
+                'Dumbbell',
+                'Machine',
+                'Bodyweight',
+                'Cable',
+                'Other',
+              ].map((equipment) => (
+                <SelectItem key={equipment} value={equipment}>
+                  {equipment}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </form>
     </DialogWrapper>

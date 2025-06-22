@@ -105,7 +105,26 @@ export function ExercisesList({
                                 : exercise.duration || 'N/A'}
                             </span>
                           </div>
-                          {/* ... other stats ... */}
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">
+                              Current Weight:
+                            </span>
+                            <span className="font-medium">
+                              {exercise.weight
+                                ? `${exercise.weight} kg`
+                                : 'N/A'}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">
+                              Last Weight:
+                            </span>
+                            <span className="font-medium">
+                              {exercise.lastWeight
+                                ? `${exercise.lastWeight} kg`
+                                : 'N/A'}
+                            </span>
+                          </div>
                         </CardContent>
                       </Card>
                     </div>
@@ -143,7 +162,7 @@ export function ExercisesList({
                         variant="outline"
                         onClick={() => onEdit(exercise)}
                       >
-                        Edit Progress
+                        Edit Exercise
                       </Button>
                       <Button
                         variant="destructive"
