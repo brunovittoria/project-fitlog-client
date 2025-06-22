@@ -6,8 +6,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
-import { BarChart2, ChevronDown, ChevronUp, Copy, Info } from 'lucide-react'
+import { BarChart2, ChevronDown, ChevronUp, Copy } from 'lucide-react'
 import { Exercise } from '@/types/models/exercise'
+import { ExercisesChart } from './exercises-chart'
 
 type ExerciseWithStringDuration = Omit<Exercise, 'duration'> & {
   duration?: string
@@ -134,25 +135,25 @@ export function ExercisesList({
                       <h4 className="text-muted-foreground mb-2 text-sm font-medium">
                         Progress
                       </h4>
-                      <Card>
-                        <CardContent className="flex h-48 items-center justify-center p-4">
-                          {exercise.progressData.length > 0 ? (
-                            <div className="flex items-center">
-                              <BarChart2 className="text-muted-foreground h-12 w-12" />
-                              <span className="text-muted-foreground ml-2">
-                                Progress chart would appear here
-                              </span>
+                      <div className="mt-4">
+                        {exercise.progressData &&
+                        exercise.progressData.length > 0 ? (
+                          <ExercisesChart data={exercise.progressData} />
+                        ) : (
+                          <div className="flex h-48 items-center justify-center rounded-lg border border-dashed p-4">
+                            <div className="text-center">
+                              <BarChart2 className="text-muted-foreground mx-auto h-12 w-12" />
+                              <p className="text-muted-foreground mt-2 text-sm">
+                                No progress data available yet.
+                              </p>
+                              <p className="text-muted-foreground mt-1 text-xs">
+                                Update the exercise weight to start tracking
+                                progress.
+                              </p>
                             </div>
-                          ) : (
-                            <div className="flex items-center">
-                              <Info className="text-muted-foreground mr-2 h-5 w-5" />
-                              <span className="text-muted-foreground">
-                                No progress data available yet
-                              </span>
-                            </div>
-                          )}
-                        </CardContent>
-                      </Card>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
 
