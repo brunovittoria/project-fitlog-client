@@ -28,6 +28,7 @@ const AuthContext = createContext({} as AuthContextData)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+  const [isLoadingUser, setIsLoadingUser] = useState(true)
   const {
     login: authLogin,
     register: authRegister,
@@ -45,17 +46,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const loadUserProfile = async () => {
+      setIsLoadingUser(true)
       const { '@fitlog:token': token } = parseCookies()
 
       if (token) {
         const userData = await userService.getUserProfile()
-        console.log('User profile response:', userData)
         if (userData) {
           setUser(userData)
         } else {
           await logout()
         }
       }
+      setIsLoadingUser(false)
     }
 
     loadUserProfile()
@@ -98,7 +100,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         user,
         isAuthenticated: !!user,
-        isLoading,
+        isLoading: isLoadingUser || isLoading,
         error: error || null,
         login,
         register,
