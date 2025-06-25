@@ -15,6 +15,8 @@ export interface CreateExerciseRequest {
   progressData?: Array<{
     date: string
     weight: number
+    reps?: number
+    sets?: number
   }>
 }
 
@@ -37,6 +39,8 @@ export interface UpdateExerciseRequest {
   progressData?: Array<{
     date: string
     weight: number
+    reps?: number
+    sets?: number
   }>
 }
 

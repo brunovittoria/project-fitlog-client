@@ -16,6 +16,8 @@ export interface Exercise {
   progressData: Array<{
     date: string
     weight: number
+    reps?: number
+    sets?: number
   }>
   createdAt: string
   updatedAt: string

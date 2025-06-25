@@ -13,6 +13,8 @@ interface ExercisesChartProps {
   data: {
     date: string
     weight: number
+    reps?: number
+    sets?: number
   }[]
 }
 
@@ -29,6 +31,9 @@ export function ExercisesChart({ data }: ExercisesChartProps) {
       .map((item) => ({
         date: new Date(item.date),
         weight: item.weight,
+        reps: item.reps ?? 1,
+        sets: item.sets ?? 1,
+        volume: (item.weight ?? 0) * (item.reps ?? 1) * (item.sets ?? 1),
       }))
       .sort((a, b) => a.date.getTime() - b.date.getTime())
       .map((item) => ({
@@ -94,6 +99,19 @@ export function ExercisesChart({ data }: ExercisesChartProps) {
           activeDot={{
             r: 6,
           }}
+        />
+        <Line
+          dataKey="volume"
+          type="monotone"
+          stroke="#8884d8"
+          strokeWidth={2}
+          dot={{
+            fill: '#8884d8',
+          }}
+          activeDot={{
+            r: 6,
+          }}
+          name="Volume (kg x reps x sets)"
         />
       </LineChart>
     </ChartContainer>
