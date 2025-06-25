@@ -76,6 +76,8 @@ export function ExercisesTemplate() {
       type: getExerciseType(data.category),
       duration: data.duration ? Number(data.duration) : undefined,
       weight: data.weight ? Number(data.weight) : undefined,
+      reps: data.reps ? Number(data.reps) : undefined,
+      sets: data.sets ? Number(data.sets) : undefined,
       progressData: [],
     })
     setIsCreateOpen(false)
@@ -87,6 +89,8 @@ export function ExercisesTemplate() {
       duration: exercise.duration
         ? Number(exercise.duration.split(' ')[0])
         : null,
+      reps: exercise.reps ?? undefined,
+      sets: exercise.sets ?? undefined,
     }
     setEditingExercise(originalExercise)
   }
@@ -100,6 +104,8 @@ export function ExercisesTemplate() {
       type: data.category === 'Cardio' ? 'cardio' : 'strength',
       duration: data.duration ? Number(data.duration) : undefined,
       weight: data.weight ? Number(data.weight) : undefined,
+      reps: data.reps ? Number(data.reps) : undefined,
+      sets: data.sets ? Number(data.sets) : undefined,
     })
     setEditingExercise(null)
   }
@@ -186,6 +192,8 @@ export function ExercisesTemplate() {
           category: editingExercise?.category ?? '',
           equipment: editingExercise?.equipment ?? '',
           lastWeight: editingExercise?.lastWeight ?? null,
+          reps: editingExercise?.reps ?? null,
+          sets: editingExercise?.sets ?? null,
         }}
         categories={EXERCISE_CATEGORIES.filter((cat) => cat !== 'All')}
         onSubmit={handleEditSubmit}

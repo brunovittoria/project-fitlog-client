@@ -46,6 +46,8 @@ export function CreateExerciseDialog({
       equipment: '',
       weight: '',
       workoutId: '',
+      reps: '',
+      sets: '',
     },
   })
 
@@ -162,6 +164,27 @@ export function CreateExerciseDialog({
             {...form.register('weight')}
             placeholder="Enter weight in kg"
             step="0.5"
+            min="0"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="reps">Reps</Label>
+          <Input
+            id="reps"
+            type="number"
+            {...form.register('reps')}
+            placeholder="Enter number of reps"
+            min="0"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="sets">Sets</Label>
+          <Input
+            id="sets"
+            type="number"
+            {...form.register('sets')}
+            placeholder="Enter number of sets"
             min="0"
           />
         </div>

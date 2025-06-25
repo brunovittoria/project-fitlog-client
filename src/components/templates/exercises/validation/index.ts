@@ -7,6 +7,8 @@ export const createExerciseSchema = z.object({
   workoutId: z.string().min(1, 'Workout is required'),
   weight: z.string().optional(),
   duration: z.string().optional(),
+  reps: z.string().optional(),
+  sets: z.string().optional(),
   progressData: z
     .array(
       z.object({
@@ -23,6 +25,8 @@ export const editExerciseSchema = z.object({
   equipment: z.string().min(1, 'Equipment is required'),
   weight: z.string().optional(),
   duration: z.string().optional(),
+  reps: z.string().optional(),
+  sets: z.string().optional(),
 })
 
 export type CreateExerciseFormData = z.infer<typeof createExerciseSchema>

@@ -31,6 +31,8 @@ interface EditExerciseDialogProps {
     category: string
     equipment: string
     lastWeight?: number | null
+    reps?: number | null
+    sets?: number | null
   }
   categories: string[]
   onSubmit: (data: z.infer<typeof editExerciseSchema>) => Promise<void>
@@ -50,6 +52,14 @@ export function EditExerciseDialog({
       category: exercise.category,
       equipment: exercise.equipment,
       weight: exercise.lastWeight?.toString() || '',
+      reps:
+        exercise.reps !== undefined && exercise.reps !== null
+          ? exercise.reps.toString()
+          : '',
+      sets:
+        exercise.sets !== undefined && exercise.sets !== null
+          ? exercise.sets.toString()
+          : '',
     },
   })
 
@@ -135,6 +145,29 @@ export function EditExerciseDialog({
               {...form.register('weight')}
               placeholder="Enter weight in kg"
               step="0.5"
+              min="0"
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-2">
+          <div className="w-full space-y-2">
+            <Label htmlFor="reps">Reps</Label>
+            <Input
+              id="reps"
+              type="number"
+              {...form.register('reps')}
+              placeholder="Enter number of reps"
+              min="0"
+            />
+          </div>
+          <div className="w-full space-y-2">
+            <Label htmlFor="sets">Sets</Label>
+            <Input
+              id="sets"
+              type="number"
+              {...form.register('sets')}
+              placeholder="Enter number of sets"
               min="0"
             />
           </div>

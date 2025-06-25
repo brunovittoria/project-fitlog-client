@@ -95,7 +95,7 @@ export function ExercisesList({
                         Stats
                       </h4>
                       <Card>
-                        <CardContent className="space-y-2 p-4">
+                        <CardContent className="space-y-1 p-2">
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">
                               Personal Best:
@@ -124,6 +124,18 @@ export function ExercisesList({
                               {exercise.lastWeight
                                 ? `${exercise.lastWeight} kg`
                                 : 'N/A'}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Reps:</span>
+                            <span className="font-medium">
+                              {exercise.reps ? `${exercise.reps}` : 'N/A'}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Sets:</span>
+                            <span className="font-medium">
+                              {exercise.sets ? `${exercise.sets}` : 'N/A'}
                             </span>
                           </div>
                         </CardContent>
