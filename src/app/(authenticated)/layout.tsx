@@ -1,5 +1,6 @@
 'use client'
 
+import { Progress } from '@/components/ui/progress'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -19,7 +20,11 @@ export default function AuthenticatedLayout({
   }, [isAuthenticated, isLoading, router])
 
   if (isLoading) {
-    return <div>Loading...</div> // You can replace this with a proper loading component
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Progress value={50} className="w-1/2" />
+      </div>
+    )
   }
 
   if (!isAuthenticated) {
