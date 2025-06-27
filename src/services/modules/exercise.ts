@@ -68,4 +68,35 @@ export const exerciseService = {
     })
     return { message: response.message || 'Exercise deleted successfully' }
   },
+
+  // Fetch exercise GIF and details from RapidAPI ExerciseDB by name
+  async getExerciseGifByName(name: string): Promise<{
+    name: string
+    gifUrl: string
+    bodyPart: string
+    target: string
+  } | null> {
+    const apiKey = process.env.NEXT_PUBLIC_RAPID_API_KEY
+    if (!apiKey) throw new Error('RapidAPI key not set')
+    const url = `https://exercisedb.p.rapidapi.com/exercises/name/${encodeURIComponent(name)}`
+    try {
+      const response = await api<GetExerciseResponse>({
+        method: 'GET',
+        endpoint: url,
+        config: {
+          headers: {
+            'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com',
+            'X-RapidAPI-Key': apiKey,
+          },
+        },
+      })
+      const data = response.data
+      if (!Array.isArray(data) || data.length === 0) return null
+      const { name: exerciseName, gifUrl, bodyPart, target } = data[0]
+      return { name: exerciseName, gifUrl, bodyPart, target }
+    } catch (error) {
+      console.error('Error fetching exercise GIF:', error)
+      return null
+    }
+  },
 }

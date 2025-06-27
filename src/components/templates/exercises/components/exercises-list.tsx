@@ -9,6 +9,7 @@ import {
 import { BarChart2, ChevronDown, ChevronUp, Copy } from 'lucide-react'
 import { Exercise } from '@/types/models/exercise'
 import { ExercisesChart } from './exercises-chart'
+import ExerciseGifCard from './ExerciseGifCard'
 
 type ExerciseWithStringDuration = Omit<Exercise, 'duration'> & {
   duration?: string
@@ -86,8 +87,9 @@ export function ExercisesList({
               </CollapsibleTrigger>
 
               <CollapsibleContent>
-                {/* Exercise Details Section */}
+                {/* Exercise GIF Card Section */}
                 <CardContent className="bg-muted/50 border-t p-4">
+                  <ExerciseGifCard name={exercise.name} />
                   <div className="flex flex-col gap-4 md:flex-row">
                     {/* Stats */}
                     <div className="md:w-1/3">

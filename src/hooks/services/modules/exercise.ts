@@ -84,3 +84,14 @@ export function useExercise(params?: GetAllExercisesRequest) {
       deleteMutation.error?.message,
   }
 }
+
+// Hook to fetch exercise GIF and details from RapidAPI by name
+export function useExerciseGifByName(name?: string) {
+  return useQuery({
+    queryKey: ['exercise-gif', name],
+    queryFn: () =>
+      name ? exerciseService.getExerciseGifByName(name) : Promise.resolve(null),
+    enabled: !!name,
+    staleTime: 1000 * 60 * 60, // 1 hour
+  })
+}
