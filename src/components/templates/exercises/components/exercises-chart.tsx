@@ -21,7 +21,7 @@ interface ExercisesChartProps {
 const chartConfig = {
   weight: {
     label: 'Weight (kg)',
-    color: 'hsl(var(--primary))',
+    color: 'hsl(var(--chart-1))',
   },
 } satisfies ChartConfig
 
@@ -91,10 +91,10 @@ export function ExercisesChart({ data }: ExercisesChartProps) {
         <Line
           dataKey="weight"
           type="monotone"
-          stroke="var(--color-weight)"
+          stroke={chartConfig.weight.color}
           strokeWidth={2}
           dot={{
-            fill: 'var(--color-weight)',
+            fill: chartConfig.weight.color,
           }}
           activeDot={{
             r: 6,
