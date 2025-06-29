@@ -3,4 +3,5 @@ export const EnvVars = {
   URL: process.env.NEXT_PUBLIC_DOMAIN_URL || '',
   API_URL: process.env.NEXT_PUBLIC_BASE_URL || '',
   Environment: process.env.NEXT_PUBLIC_NODE_ENV || 'production',
-};
+  RAPID_API_KEY: process.env.NEXT_PUBLIC_RAPID_API_KEY || '',
+}
