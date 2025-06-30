@@ -11,6 +11,12 @@ export const axiosInstance = axios.create({
   withCredentials: true,
 })
 
+export const axiosExternalInstance = axios.create({
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
 // Request interceptor
 axiosInstance.interceptors.request.use((config) => {
   const { '@fitlog:token': token } = parseCookies()

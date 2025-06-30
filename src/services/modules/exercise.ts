@@ -1,4 +1,4 @@
-import { api } from '@/lib/axios'
+import { api, axiosExternalInstance } from '@/lib/axios'
 import type {
   GetExerciseResponse,
   GetAllExercisesResponse,
@@ -79,16 +79,14 @@ export const exerciseService = {
     const apiKey = process.env.NEXT_PUBLIC_RAPID_API_KEY
     console.log('apiKey', apiKey)
     if (!apiKey) throw new Error('RapidAPI key not set')
-    const url = `https://exercisedb.p.rapidapi.com/exercises/name/${encodeURIComponent(name)}`
+    const url = `https://exercisedb.p.rapidapi.com/exercises/name/${encodeURIComponent(name.toLowerCase())}`
     try {
-      const response = await api<GetExerciseResponse>({
+      const response = await axiosExternalInstance.request({
         method: 'GET',
-        endpoint: url,
-        config: {
-          headers: {
-            'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com',
-            'X-RapidAPI-Key': apiKey,
-          },
+        url,
+        headers: {
+          'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com',
+          'X-RapidAPI-Key': apiKey,
         },
       })
       const data = response.data
