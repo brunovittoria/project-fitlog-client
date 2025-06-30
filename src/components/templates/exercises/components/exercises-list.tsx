@@ -9,7 +9,7 @@ import {
 import { BarChart2, ChevronDown, ChevronUp, Copy } from 'lucide-react'
 import { Exercise } from '@/types/models/exercise'
 import { ExercisesChart } from './exercises-chart'
-import ExerciseGifCard from './ExerciseGifCard'
+import ExerciseGifCard from './exercises-gif-card'
 
 type ExerciseWithStringDuration = Omit<Exercise, 'duration'> & {
   duration?: string
