@@ -77,7 +77,6 @@ export const exerciseService = {
     target: string
   } | null> {
     const apiKey = process.env.NEXT_PUBLIC_RAPID_API_KEY
-    console.log('apiKey', apiKey)
     if (!apiKey) throw new Error('RapidAPI key not set')
     const url = `https://exercisedb.p.rapidapi.com/exercises/name/${encodeURIComponent(name.toLowerCase())}`
     try {
