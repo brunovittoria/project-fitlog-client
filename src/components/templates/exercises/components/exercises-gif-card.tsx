@@ -14,8 +14,6 @@ const ExerciseGifCard = ({ name }: ExerciseGifCardProps) => {
     )
   }
   if (error || !data) {
-    console.log('error', error)
-    console.log('data', data)
     return (
       <div className="text-muted-foreground flex h-48 w-full items-center justify-center text-sm">
         GIF não disponível
