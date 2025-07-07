@@ -15,6 +15,7 @@ import type {
 import { Exercise } from '@/types/models/exercise'
 import { QueryParams } from '@/types/api/base'
 import { API_ENDPOINTS } from '@/services/routes'
+import { translateExerciseName } from '@/locales/exercise-names-map'
 
 const { EXERCISE, EXERCISES } = API_ENDPOINTS
 
@@ -78,7 +79,8 @@ export const exerciseService = {
   } | null> {
     const apiKey = process.env.NEXT_PUBLIC_RAPID_API_KEY
     if (!apiKey) throw new Error('RapidAPI key not set')
-    const url = `https://exercisedb.p.rapidapi.com/exercises/name/${encodeURIComponent(name.toLowerCase())}`
+    const translatedName = translateExerciseName(name)
+    const url = `https://exercisedb.p.rapidapi.com/exercises/name/${encodeURIComponent(translatedName)}`
     try {
       const response = await axiosExternalInstance.request({
         method: 'GET',
