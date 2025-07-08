@@ -20,6 +20,8 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { editExerciseSchema } from '../../validation'
 import { useEffect } from 'react'
+import { AutocompleteInput } from '@/components/molecules/autocomplete-input'
+import { exerciseNamesMap } from '@/locales/exercise-names-map'
 
 type EditExerciseForm = z.infer<typeof editExerciseSchema>
 
@@ -98,11 +100,22 @@ export function EditExerciseDialog({
       <form className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="name">Exercise Name</Label>
-          <Input
-            id="name"
-            {...form.register('name')}
+          <AutocompleteInput
+            options={Object.keys(exerciseNamesMap)}
+            value={form.watch('name')}
+            onChange={(val) => form.setValue('name', val)}
             placeholder="Enter exercise name"
+            inputClassName=""
+            disabled={form.formState.isSubmitting}
+            id="name"
+            name="name"
+            autoComplete="off"
           />
+          {form.formState.errors?.name && (
+            <span className="xs text-red-500">
+              {form.formState.errors.name.message as string}
+            </span>
+          )}
         </div>
 
         <div className="flex justify-between gap-2">
