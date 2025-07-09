@@ -153,8 +153,7 @@ export const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
                       key={getOptionValue(option)}
                       role="option"
                       aria-selected={highlightedIndex === idx}
-                      onMouseDown={(e) => e.preventDefault()}
-                      onClick={() => handleOptionClick(option)}
+                      onSelect={() => handleOptionClick(option)}
                       className={cn(
                         highlightedIndex === idx &&
                           'bg-accent text-accent-foreground',
