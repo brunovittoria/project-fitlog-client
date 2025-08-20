@@ -63,37 +63,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     loadUserProfile()
   }, [logout])
 
-  const login = async (credentials: LoginRequest) => {
-    const response = await authLogin(credentials)
+  const login = useCallback(
+    async (credentials: LoginRequest) => {
+      const response = await authLogin(credentials)
 
-    if (!response || !response.token) {
-      throw new Error('Invalid login response')
-    }
+      if (!response || !response.token) {
+        throw new Error('Invalid login response')
+      }
 
-    setCookie(undefined, '@fitlog:token', response.token, {
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-      path: '/',
-    })
+      setCookie(undefined, '@fitlog:token', response.token, {
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        path: '/',
+      })
 
-    const userData: User = {
-      id: response.id,
-      name: response.name,
-      email: response.email,
-      subscriptionId: response.subscriptions?.id || null,
-      permissions: 'user',
-      phone: null,
-      weight: null,
-      height: null,
-    }
+      const userData: User = {
+        id: response.id,
+        name: response.name,
+        email: response.email,
+        subscriptionId: response.subscriptions?.id || null,
+        permissions: 'user',
+        phone: null,
+        weight: null,
+        height: null,
+      }
 
-    setUser(userData)
-    router.push('/dashboard')
-  }
+      setUser(userData)
+      router.push('/dashboard')
+    },
+    [authLogin, router],
+  )
 
-  const register = async (userData: RegisterRequest) => {
-    await authRegister(userData)
-    router.push('/auth/login')
-  }
+  const register = useCallback(
+    async (userData: RegisterRequest) => {
+      await authRegister(userData)
+      router.push('/auth/login')
+    },
+    [authRegister, router],
+  )
 
   return (
     <AuthContext.Provider

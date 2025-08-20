@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useExercise } from '@/hooks/services/modules/exercise'
 import { formatDuration } from '@/utils/formaters'
 import { ExercisesHeader } from './components/exercises-header'
@@ -43,47 +43,49 @@ export function ExercisesTemplate() {
   const userId = profile?.id
   const { workouts } = useWorkout(userId || '')
 
-  const filteredExercises = exercises
-    .map((exercise) => ({
-      ...exercise,
-      duration: exercise.duration
-        ? formatDuration(exercise.duration)
-        : undefined,
-    }))
-    .filter(
-      (exercise) =>
-        (activeCategory === 'All' || exercise.category === activeCategory) &&
-        exercise.name.toLowerCase().includes(searchTerm.toLowerCase()),
-    ) as Array<Omit<Exercise, 'duration'> & { duration?: string }>
+  const filteredExercises = useMemo(() => {
+    return exercises
+      .map((exercise) => ({
+        ...exercise,
+        duration: exercise.duration
+          ? formatDuration(exercise.duration)
+          : undefined,
+      }))
+      .filter(
+        (exercise) =>
+          (activeCategory === 'All' || exercise.category === activeCategory) &&
+          exercise.name.toLowerCase().includes(searchTerm.toLowerCase()),
+      ) as Array<Omit<Exercise, 'duration'> & { duration?: string }>
+  }, [exercises, activeCategory, searchTerm])
 
-  const handleCreate = async (data: z.infer<typeof createExerciseSchema>) => {
-    const getExerciseType = (
-      category: string,
-    ): 'strength' | 'cardio' | 'mobility' => {
+  const getExerciseType = useCallback(
+    (category: string): 'strength' | 'cardio' | 'mobility' => {
       const lowerCaseCategory = category.toLowerCase()
-      if (lowerCaseCategory === 'cardio') {
-        return 'cardio'
-      }
-      if (lowerCaseCategory === 'mobility') {
-        return 'mobility'
-      }
+      if (lowerCaseCategory === 'cardio') return 'cardio'
+      if (lowerCaseCategory === 'mobility') return 'mobility'
       return 'strength'
-    }
+    },
+    [],
+  )
 
-    await createExercise({
-      ...data,
-      workoutId: data.workoutId,
-      type: getExerciseType(data.category),
-      duration: data.duration ? Number(data.duration) : undefined,
-      weight: data.weight ? Number(data.weight) : undefined,
-      reps: data.reps ? Number(data.reps) : undefined,
-      sets: data.sets ? Number(data.sets) : undefined,
-      progressData: [],
-    })
-    setIsCreateOpen(false)
-  }
+  const handleCreate = useCallback(
+    async (data: z.infer<typeof createExerciseSchema>) => {
+      await createExercise({
+        ...data,
+        workoutId: data.workoutId,
+        type: getExerciseType(data.category),
+        duration: data.duration ? Number(data.duration) : undefined,
+        weight: data.weight ? Number(data.weight) : undefined,
+        reps: data.reps ? Number(data.reps) : undefined,
+        sets: data.sets ? Number(data.sets) : undefined,
+        progressData: [],
+      })
+      setIsCreateOpen(false)
+    },
+    [createExercise, getExerciseType],
+  )
 
-  const handleEdit = (exercise: ExerciseWithStringDuration) => {
+  const handleEdit = useCallback((exercise: ExerciseWithStringDuration) => {
     const originalExercise: Exercise = {
       ...exercise,
       duration: exercise.duration
@@ -93,7 +95,7 @@ export function ExercisesTemplate() {
       sets: exercise.sets ?? undefined,
     }
     setEditingExercise(originalExercise)
-  }
+  }, [])
 
   const handleEditSubmit = async (data: z.infer<typeof editExerciseSchema>) => {
     if (!editingExercise) return

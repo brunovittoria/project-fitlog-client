@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { WorkoutsHeader } from './components/workouts-header'
 import { WorkoutsSearch } from './components/workouts-search'
 import { WorkoutsTable } from './components/workouts-table'
@@ -18,6 +18,42 @@ export interface Workout {
   category: string
 }
 
+// Move mockWorkouts outside component to avoid ESLint issues
+const mockWorkouts: Workout[] = [
+  {
+    id: 1,
+    name: 'Upper Body Strength',
+    exercises: 8,
+    lastPerformed: '2023-06-10',
+    duration: '45 min',
+    category: 'Strength',
+  },
+  {
+    id: 2,
+    name: 'Lower Body Strength',
+    exercises: 6,
+    lastPerformed: '2023-06-15',
+    duration: '30 min',
+    category: 'Strength',
+  },
+  {
+    id: 3,
+    name: 'Cardio HIIT',
+    exercises: 5,
+    lastPerformed: '2023-06-20',
+    duration: '25 min',
+    category: 'Cardio',
+  },
+  {
+    id: 4,
+    name: 'Mobility Yoga',
+    exercises: 4,
+    lastPerformed: '2023-06-25',
+    duration: '20 min',
+    category: 'Mobility',
+  },
+]
+
 export function WorkoutsTemplate() {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
@@ -25,41 +61,33 @@ export function WorkoutsTemplate() {
   const [editingWorkout, setEditingWorkout] = useState<Workout | null>(null)
   const [deletingWorkout, setDeletingWorkout] = useState<Workout | null>(null)
 
-  const mockWorkouts = [
-    {
-      id: 1,
-      name: 'Upper Body Strength',
-      exercises: 8,
-      lastPerformed: '2023-06-10',
-      duration: '45 min',
-      category: 'Strength',
-    },
-  ]
+  const filteredWorkouts = useMemo(() => {
+    return mockWorkouts.filter(
+      (workout) =>
+        workout.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        workout.category.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
+  }, [searchTerm])
 
-  const filteredWorkouts = mockWorkouts.filter(
-    (workout) =>
-      workout.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      workout.category.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
-  // eslint-disable-next-line
-  const handleCreate = (data: any) => {
+  const handleCreate = useCallback((data: unknown) => {
     console.log('Create workout', data)
     setIsCreateOpen(false)
-    // In a real app, you would call an API here;
-  }
-  // eslint-disable-next-line
-  const handleEditSubmit = (data: any) => {
-    console.log('Update workout', editingWorkout?.id, data)
-    setEditingWorkout(null)
-  }
+  }, [])
 
-  const handleDelete = () => {
+  const handleEditSubmit = useCallback(
+    (data: unknown) => {
+      console.log('Update workout', editingWorkout?.id, data)
+      setEditingWorkout(null)
+    },
+    [editingWorkout?.id],
+  )
+
+  const handleDelete = useCallback(() => {
     console.log('Delete workout', deletingWorkout?.id)
     setDeletingWorkout(null)
-  }
+  }, [deletingWorkout?.id])
 
-  // eslint-disable-next-line
-  const handleDuplicate = (workout: any) => {
+  const handleDuplicate = useCallback((workout: Workout) => {
     const newWorkout = {
       ...workout,
       id: Date.now(), // In a real app, this would be handled by the backend
@@ -67,9 +95,8 @@ export function WorkoutsTemplate() {
       lastPerformed: '', // Reset last performed date
     }
 
-    // In a real app, you would call an API here
     console.log('Duplicate workout', newWorkout)
-  }
+  }, [])
 
   return (
     <div className="space-y-6">

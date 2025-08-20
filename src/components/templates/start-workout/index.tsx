@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { StartWorkoutHeader } from './components/start-workout-header'
 import { WorkoutProgress } from './components/workout-progress'
 import { CurrentExercise } from './components/current-exercise'
@@ -36,29 +36,41 @@ export function StartWorkoutTemplate({
   const [isTimerRunning, setIsTimerRunning] = useState(true)
   const [elapsedTime, setElapsedTime] = useState(0)
 
-  const currentExercise = workout.exercises[currentExerciseIndex]
-  const progress = (completedExercises.length / workout.exercises.length) * 100
-  const isAllCompleted = completedExercises.length === workout.exercises.length
+  const currentExercise = useMemo(() => {
+    return workout.exercises[currentExerciseIndex]
+  }, [workout.exercises, currentExerciseIndex])
 
-  const handleNextExercise = () => {
+  const progress = useMemo(
+    () => (completedExercises.length / workout.exercises.length) * 100,
+    [completedExercises.length, workout.exercises.length],
+  )
+  const isAllCompleted = useMemo(
+    () => completedExercises.length === workout.exercises.length,
+    [completedExercises.length, workout.exercises.length],
+  )
+
+  const handleNextExercise = useCallback(() => {
     if (currentExerciseIndex < workout.exercises.length - 1) {
       setCompletedExercises([...completedExercises, currentExerciseIndex])
       setCurrentExerciseIndex(currentExerciseIndex + 1)
     } else {
       setCompletedExercises([...completedExercises, currentExerciseIndex])
     }
-  }
+  }, [currentExerciseIndex, workout.exercises, completedExercises])
 
-  const handlePreviousExercise = () => {
+  const handlePreviousExercise = useCallback(() => {
     if (currentExerciseIndex > 0) {
       setCurrentExerciseIndex(currentExerciseIndex - 1)
       setCompletedExercises(
         completedExercises.filter((i) => i !== currentExerciseIndex - 1),
       )
     }
-  }
+  }, [currentExerciseIndex, completedExercises])
 
-  const toggleTimer = () => setIsTimerRunning(!isTimerRunning)
+  const toggleTimer = useCallback(
+    () => setIsTimerRunning(!isTimerRunning),
+    [isTimerRunning],
+  )
 
   return (
     <div className="min-h-screen">
