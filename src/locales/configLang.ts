@@ -3,7 +3,7 @@
 import { format, Locale } from 'date-fns'
 import { ptBR, enUS, de, es, fr, it, ru } from 'date-fns/locale'
 
-type LanguageCode = 'en' | 'de' | 'es' | 'fr' | 'it' | 'ru' | 'pt'
+export type LanguageCode = 'en' | 'de' | 'es' | 'fr' | 'it' | 'ru' | 'pt'
 
 // Mapeamento de idiomas para as localizações do date-fns
 const locales: Record<LanguageCode, Locale> = {
