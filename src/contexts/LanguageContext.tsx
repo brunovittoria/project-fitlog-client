@@ -28,14 +28,31 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   // Initialize language from localStorage or default
   useEffect(() => {
-    const savedLanguage = localStorage.getItem('i18nextLng')
-    if (savedLanguage) {
-      setCurrentLanguage(savedLanguage)
-      i18n.changeLanguage(savedLanguage)
-    } else {
-      setCurrentLanguage(defaultLang.value)
-      i18n.changeLanguage(defaultLang.value)
+    const initializeLanguage = async () => {
+      if (!i18n.isInitialized) {
+        await new Promise((resolve) => {
+          const checkInitialized = () => {
+            if (i18n.isInitialized) {
+              resolve(true)
+            } else {
+              setTimeout(checkInitialized, 10)
+            }
+          }
+          checkInitialized()
+        })
+      }
+
+      const savedLanguage = localStorage.getItem('i18nextLng')
+      if (savedLanguage) {
+        setCurrentLanguage(savedLanguage)
+        await i18n.changeLanguage(savedLanguage)
+      } else {
+        setCurrentLanguage(defaultLang.value)
+        await i18n.changeLanguage(defaultLang.value)
+      }
     }
+
+    initializeLanguage()
   }, [i18n])
 
   const changeLanguage = useCallback(

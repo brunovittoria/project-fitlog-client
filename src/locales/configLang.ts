@@ -47,6 +47,11 @@ export const allLangs = [
     value: 'ru',
     icon: 'flagpack:ru',
   },
+  {
+    label: 'Portuguese (Brazil)',
+    value: 'pt',
+    icon: 'flagpack:br',
+  },
 ]
 
 export const defaultLang = {
